@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
 from models import Item, ItemCreate, ItemDB
 from database import get_db, engine, Base
@@ -10,6 +11,15 @@ from database import get_db, engine, Base
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # React's default dev server port
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 @app.get("/")
 def root() -> dict[str, str]:
@@ -20,7 +30,7 @@ def about() -> dict[str, str]:
     return {"message": "This is the about page."}
 
 # Item CRUD Operations
-@app.post("/items/", response_model=Item)
+@app.post("/items", response_model=Item)
 def create_item(item: ItemCreate, db: Session = Depends(get_db)) -> Item:
     try:
         db_item = ItemDB(
@@ -38,7 +48,7 @@ def create_item(item: ItemCreate, db: Session = Depends(get_db)) -> Item:
         db.rollback()
         raise HTTPException(status_code=400, detail="SKU already exists")
 
-@app.get("/items/", response_model=List[Item])
+@app.get("/items", response_model=List[Item])
 def list_items(db: Session = Depends(get_db)) -> List[Item]:
     return db.query(ItemDB).all()
 
