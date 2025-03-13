@@ -1,0 +1,9 @@
+Requirement already satisfied: sqlalchemy in ./venv/lib/python3.9/site-packages (2.0.38)
+Collecting psycopg2-binary
+  Downloading psycopg2-binary-2.9.10.tar.gz (385 kB)
+  Downloading psycopg2_binary-2.9.9-cp39-cp39-macosx_11_0_arm64.whl (2.6 MB)
+Collecting python-dotenv
+  Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+Requirement already satisfied: typing-extensions>=4.6.0 in ./venv/lib/python3.9/site-packages (from sqlalchemy) (4.12.2)
+Installing collected packages: python-dotenv, psycopg2-binary
+Successfully installed psycopg2-binary-2.9.9 python-dotenv-1.0.1
